@@ -1,0 +1,25 @@
+TrailStamp
+==========
+
+Introduction goes here.
+
+== Installation
+
+  ruby script/plugin install git://github.com/matsuda/trail_stamp.git
+
+== Usage
+
+=== Prepare database
+
+Generate and apply the migration:
+
+  ruby script/generate trail_stamp_migration
+  rake db:migrate
+
+Example
+=======
+
+Example goes here.
+
+
+Copyright (c) 2010 [name of plugin creator], released under the MIT license
