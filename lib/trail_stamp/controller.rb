@@ -1,30 +1,35 @@
 module TrailStamp
   module Controller
     def self.included(base)
-      # base.extend(ClassMethods)
-      base.send :include, InstanceMethods
+      base.extend(ClassMethods)
     end
 
     module ClassMethods
+      def trail_stamp(stamper_method = 'current_user')
+        include InstanceMethods
+        around_filter :stamp_on
+        class_eval <<-EOF
+          private
+          def stamper
+            #{stamper_method}
+          end
+        EOF
+      end
     end
 
     module InstanceMethods
       private
-      def stamper
-        current_user
-      end
-
       def stamp_on
-        @monitor_trail = Monitor::Trail.new
-        @monitor_trail.controller = controller_path
-        @monitor_trail.action = action_name
-        @monitor_trail.stamper = stamper
+        @_monitor_trail = Monitor::Trail.new
+        @_monitor_trail.controller = controller_path
+        @_monitor_trail.action = action_name
+        @_monitor_trail.stamper = stamper
         yield
-        @monitor_trail.save
+        @_monitor_trail.save
       end
 
       def add_stamp(record)
-        @monitor_trail.add_stamp(record)
+        @_monitor_trail.add_stamp(record)
       end
     end
   end

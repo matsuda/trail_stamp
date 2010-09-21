@@ -8,6 +8,7 @@ class Monitor::Trail < ActiveRecord::Base
 
   def add_stamp(record)
     self.stamps << self.stamps.build(:stampable => record)
+    self
   end
   
   def exist_stamps?
